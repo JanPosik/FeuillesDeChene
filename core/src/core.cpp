@@ -50,8 +50,16 @@ namespace Core {
 			}
 		}
 
-		state.CurrentHint = state.Words[random_index].From;
-		state.CurrentTarget = state.Words[random_index].To;	
+		if (!state.Flipped)
+		{
+			state.CurrentHint = state.Words[random_index].From;
+			state.CurrentTarget = state.Words[random_index].To;	
+		}
+		else
+		{
+			state.CurrentHint = state.Words[random_index].To;
+			state.CurrentTarget = state.Words[random_index].From;
+		}
 	}
 
 	bool CheckAnswer(GameState& state, const std::string& attempt)
@@ -92,13 +100,14 @@ namespace Core {
 	
 			std::string score_text = ((state.RightAnswer == NO_ANSWER) ? "" : ((state.RightAnswer == RIGHT_ANSWER) ? GREEN : RED)) + std::string("Score: ") + std::to_string(state.Score) + RESET;
 			std::string record_text = (state.Score >= state.Record && state.Record != 0) ? (YELLOW + std::string("Record: ") + std::to_string(state.Record) + RESET) : ("Record: " + std::to_string(state.Record));
-			std::string difficulty_text_hard = (state.Difficulty == DIFFICULTY::HARD) ? (BOLD_WHITE + std::string("Hard: ")) : "";	
+			std::string difficulty_text_hard = (state.Difficulty == DIFFICULTY::HARD) ? (BOLD_WHITE + std::string("Hard")) : "";	
 			std::string difficulty_text = (state.Difficulty == DIFFICULTY::MEDIUM) ? "Medium" : ((state.Difficulty == DIFFICULTY::EASY) ? "Easy" : "");
 			std::string difficulty_text_any = (state.Difficulty == DIFFICULTY::ANY) ? "Any" : "";
+			std::string lang_word_text = (!state.Flipped ? (state.LangFrom + std::string(") ") + state.CurrentHint + std::string(" = (") + state.LangTo) : (state.LangTo + std::string(") ") + state.CurrentHint + std::string(" = (") + state.LangFrom));
 	
 			std::cout << "#-- " << score_text << " --- " << record_text << " --- Difficulty: "
 				<< difficulty_text_hard << difficulty_text << difficulty_text_any << RESET << " --- " << BLUE << "[" << bar << "] " << (int)(p*100) << "%" << RESET
-				<< "\n\\_ (" << state.LangFrom << ") " << state.CurrentHint << " = (" << state.LangTo << ") ";
+				<< "\n\\_ (" << lang_word_text << ") ";
 		}
 	
 		std::string GetDatabasePath(int argc, char* argv[])
@@ -139,18 +148,20 @@ namespace Core {
 
 		void ProcessCommand(GameState& state, const std::string& command)
 		{
-			if (command.compare("#exit") == 0)
+			if (command == std::string("#exit"))
 				state.Play = false;
-			else if (command.compare("#easy") == 0)
+			else if (command == std::string("#easy"))
 				state.Difficulty = DIFFICULTY::EASY;
-			else if (command.compare("#medium") == 0)
+			else if (command == std::string("#medium"))
 				state.Difficulty = DIFFICULTY::MEDIUM;
-			else if (command.compare("#hard") == 0)
+			else if (command == std::string("#hard"))
 				state.Difficulty = DIFFICULTY::HARD;
-			else if (command.compare("#any") == 0)
+			else if (command == std::string("#any"))
 				state.Difficulty = DIFFICULTY::ANY;
-			else if (command.compare("#help") == 0)
+			else if (command == std::string("#help"))
 				PrintHelpMessage();
+			else if (command == std::string("#flip"))
+				state.Flipped = !state.Flipped;
 	
 			ClearScreen();
 		}		
@@ -166,6 +177,7 @@ namespace Core {
 				<< "\t#medium\t\tfilter only medium difficulty\n"
 				<< "\t#hard\t\tfilter only hard difficulty\n"
 				<< "\t#any\t\tno filter; every difficulty\n"
+				<< "\t#flip\t\tflips targeted language\n"
 				<< "\t#\t\tskips current word\n"
 				<< "\n[Type anything to continue]: ";
 			std::string temp;

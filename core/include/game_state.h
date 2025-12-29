@@ -22,6 +22,7 @@ namespace Core {
                 std::string LangTo;
                 DIFFICULTY Difficulty = DIFFICULTY::ANY;
                 bool Play = true;
+		bool Flipped = false;
                 std::vector<Word> Words;
         };
 

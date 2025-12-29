@@ -1,5 +1,4 @@
 #include "word_loader.h"
-#include <iostream>
 #include <sstream>
 #include <fstream>
 #include <algorithm>
@@ -20,16 +19,13 @@ DIFFICULTY IntToDifficulty(int value)
 
 namespace Core {
 
-	void LoadWords(GameState& state, const std::string& filename)
+	LOAD_RESULT LoadWords(GameState& state, const std::string& filename)
 	{
 		std::vector<Word> words;
 		std::ifstream file(filename);
 
 		if (!file.is_open())
-		{
-			std::cerr << "ERROR: data file could not be open [" << filename << "]\n";
-			return;
-		}
+			return LOAD_RESULT::NOT_FOUND;
 
 		std::string line;
 
@@ -63,10 +59,12 @@ namespace Core {
 					case 1:
 						word.To = segment; break;
 					case 2:
-						try { difficulty_int = std::stoi(segment); }
+						try 
+						{
+							difficulty_int = std::stoi(segment);
+						}
 						catch (const std::exception& e)
 						{
-							std::cerr << "ERROR: conversion from STRING to INT failed\n";
 							difficulty_int = 1;
 						}
 						word.Difficulty = IntToDifficulty(difficulty_int);
@@ -77,12 +75,9 @@ namespace Core {
 
 			if (part == 3)
 				words.push_back(word);
-			else
-				std::cerr << "ERROR: struct WORD not complete > " << line << "\n";
-
 		}
 
 		state.Words = words;
-		return;
+		return LOAD_RESULT::OK;
 	}
 }

@@ -7,17 +7,25 @@
 #include "difficulty_types.h"
 #include "word.h"
 #include "game_state.h"
+#include "load_result.h"
 
 namespace Core {
 
-	void Init(GameState&, const std::string&);
+	LOAD_RESULT Init(GameState&, const std::string&);
 	void NextWord(GameState&);
-	void PrintInterface(GameState&);
-	void ProcessInput(GameState&, const std::string&);
-	void ProcessCommand(GameState&, const std::string&);
-	void CheckAnswer(GameState&, const std::string&);
-	void PrintHelpMessage();
-	std::string GetDatabasePath(int, char* []);
+	bool CheckAnswer(GameState&, const std::string&);
+
+	namespace CLI {
+
+		void PrintInterface(GameState&);
+		std::string GetDatabasePath(int, char* []);
+		void ProcessInput(GameState&, const std::string&);
+		void ProcessCommand(GameState&, const std::string&);
+		void PrintHelpMessage();
+		void ClearScreen();
+		void PrintLoadResult(LOAD_RESULT);
+
+	}
 }
 
 #endif

@@ -19,13 +19,16 @@ DIFFICULTY IntToDifficulty(int value)
 
 namespace Core {
 
-	LOAD_RESULT LoadWords(GameState& state, const std::string& filename)
+	void LoadWords(GameState& state, const std::string& filename)
 	{
 		std::vector<Word> words;
 		std::ifstream file(filename);
 
 		if (!file.is_open())
-			return LOAD_RESULT::NOT_FOUND;
+		{
+			state.WordsLoaded = false;
+			return;
+		}
 
 		std::string line;
 
@@ -78,6 +81,6 @@ namespace Core {
 		}
 
 		state.Words = words;
-		return LOAD_RESULT::OK;
+		state.WordsLoaded = true;
 	}
 }

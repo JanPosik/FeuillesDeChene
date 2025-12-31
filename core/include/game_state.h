@@ -15,6 +15,7 @@ namespace Core {
 	struct GameState {
                 int Score = 0;
                 int Record = 0;
+		int LastRecord = 0;
                 int RightAnswer = NO_ANSWER;
                 std::string CurrentHint;
                 std::string CurrentTarget;
@@ -23,6 +24,7 @@ namespace Core {
                 DIFFICULTY Difficulty = DIFFICULTY::ANY;
                 bool Play = true;
 		bool Flipped = false;
+		bool WordsLoaded = false;
                 std::vector<Word> Words;
         };
 

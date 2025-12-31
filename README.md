@@ -18,6 +18,7 @@ The second one is there to change program's configuration or variables, the prog
 | `#hard` | changes word filter to only hard difficulty words |
 | `#any` | no filter; uses every word from database |
 | `#flip` | flips targeted language |
+| `#record` | sets record to current score |
 | `#` | skips current word |
 
 ## Language Independent

@@ -1,5 +1,6 @@
 #include "core.h"
 #include "word_loader.h"
+#include "record_manager.h"
 #include <random>
 #include <vector>
 #include <string>
@@ -29,9 +30,10 @@ static std::random_device rd;
 
 namespace Core {
 
-	LOAD_RESULT Init(GameState& state, const std::string& filename)
+	void Init(GameState& state, const std::string& filename)
 	{
-		return LoadWords(state, filename);
+		LoadWords(state, filename);
+		LoadRecord(state);
 	}
 
 	void NextWord(GameState& state)
@@ -75,10 +77,18 @@ namespace Core {
 		{
 			state.RightAnswer = WRONG_ANSWER;
 			state.Score = 0;
+			if (state.Record > state.LastRecord)
+				WriteRecord(state.Record);
+
 			return false;
 		}
 	}
 
+	void End(GameState& state)
+	{
+		if (state.Record > state.LastRecord)
+			WriteRecord(state.Record);
+	}
 
 
 	namespace CLI {
@@ -162,6 +172,11 @@ namespace Core {
 				PrintHelpMessage();
 			else if (command == std::string("#flip"))
 				state.Flipped = !state.Flipped;
+			else if (command == std::string("#record"))
+			{
+				WriteRecord(state.Score);
+				state.Record = state.Score;
+			}
 	
 			ClearScreen();
 		}		
@@ -178,6 +193,7 @@ namespace Core {
 				<< "\t#hard\t\tfilter only hard difficulty\n"
 				<< "\t#any\t\tno filter; every difficulty\n"
 				<< "\t#flip\t\tflips targeted language\n"
+				<< "\t#record\t\tsets record to current score\n"
 				<< "\t#\t\tskips current word\n"
 				<< "\n[Type anything to continue]: ";
 			std::string temp;
@@ -190,14 +206,11 @@ namespace Core {
 			CLEAR;
 		}
 
-		void PrintLoadResult(LOAD_RESULT result)
+		void End(GameState& state)
 		{
-			switch (result)
+			if (!state.WordsLoaded)
 			{
-				case LOAD_RESULT::NOT_FOUND:
-					std::cerr << "ERROR: Database file could not be found\n"; break;
-				case LOAD_RESULT::OK:
-					std::cerr << "Database initiliaze successfuly\n"; break;
+				std::cout << RED << "ERROR: Word database could not be found or opened\n" << RESET;
 			}
 		}
 

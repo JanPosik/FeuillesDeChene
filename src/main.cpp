@@ -4,11 +4,11 @@
 int main(int argc, char* argv[])
 {
 	Core::GameState state;
-	Core::CLI::PrintLoadResult(Core::Init(state, Core::CLI::GetDatabasePath(argc, argv)));
+	Core::Init(state, Core::CLI::GetDatabasePath(argc, argv));
 	Core::CLI::InitWindowsConsole();
 	Core::CLI::ClearScreen();
 
-	while(state.Play)
+	while(state.Play && state.WordsLoaded)
 	{
 		Core::NextWord(state);
 		Core::CLI::PrintInterface(state);
@@ -18,6 +18,9 @@ int main(int argc, char* argv[])
 
 		Core::CLI::ProcessInput(state, userInput);
 	}
+
+	Core::End(state);
+	Core::CLI::End(state);
 
 	return 0;
 }

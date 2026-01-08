@@ -6,26 +6,16 @@
 #include <vector>
 #include "difficulty_types.h"
 #include "word.h"
+#include "word_loader.h"
 #include "game_state.h"
+#include "record_manager.h"
 
 namespace Core {
 
-	void Init(GameState&, const std::string&);
+	void LoadDatabase(GameState&, const std::string&);
 	void NextWord(GameState&);
 	bool CheckAnswer(GameState&, const std::string&);
-	void End(GameState&);
 
-	namespace CLI {
-
-		void PrintInterface(GameState&);
-		std::string GetDatabasePath(int, char* []);
-		void ProcessInput(GameState&, const std::string&);
-		void ProcessCommand(GameState&, const std::string&);
-		void PrintHelpMessage();
-		void ClearScreen();
-		void End(GameState&);
-
-	}
 }
 
 #endif

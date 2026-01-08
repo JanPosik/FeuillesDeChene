@@ -25,7 +25,7 @@ The second one is there to change program's configuration or variables, the prog
 With external database files, ten of them are provided in source code, the program becomes more flexible and thus could be used for any language. It is also possible to use your own database when following few rules, the rules can be found [here](#custom-databases).
 
 ## Custom Databases
-With small effort, not counting writing down the words and its translation, it is easy to start using custom words lists. However, there are some criteria that must be followed.
+With small effort, not counting writing down the words and its translation, it is easy to start using custom words lists. However, there are some criteria that must be followed. You can find examples in the `data/` folder.
 
 ### Rules for making custom databases
 

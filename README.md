@@ -1,11 +1,11 @@
-# Feuilles de Chênes
-Multi-platform program that runs on Linux and Windows. Currently as a CLI only program. In future, it is planned to be available as Qt and Web application powered by the same core.
+# Feuilles de Chêne
+Multi-platform program running on Linux and Windows for learning words from any language. It is an independend core that powers CLI and Qt application. In future, web application is planned as well. Project is built with CMake, developed on Linux. This program is language independent; any word database can be attached, when some rules are followed. The concept is comparing one string with another, thus it could be potentionaly used more widly, e.g. Morse code, yes/no question etc.
 
-**Learn words from any language**. On Linux, the CLI offers colored interface, therefore making it easier to read.
+## CLI version
+On Linux, the CLI version offers colored interface, therefore making it easier to read, that's not accomplished on Windows.
 
-## Data Input: Words Entries & Commands
-The program features a single interface with two modes. The default one; the word translation, is available with no special effort. 
-The second one is there to change program's configuration or variables, the program recognizes a command, when the string starts with # sign.
+The program features a single interface with two modes. The default one; the word translation, is available with no special effort. That's when the words are translated.
+The second one is there to change program's state configuration or variables, the program recognizes a command, when the string starts with `#` sign.
 
 ### Every command is listed below:
 
@@ -21,11 +21,25 @@ The second one is there to change program's configuration or variables, the prog
 | `#record` | sets record to current score |
 | `#` | skips current word |
 
-## Language Independent
-With external database files, ten of them are provided in source code, the program becomes more flexible and thus could be used for any language. It is also possible to use your own database when following few rules, the rules can be found [here](#custom-databases).
+### Attaching databases
+With external databases, ten of them are provided in `data/` folder, the program becomes more flexible and could be used for any language. It is possible to make custom databases, when following some rules, that can be found [here](#custom-databases).
+
+When executing program in the terminal, the `-d` switch can be used followed with path to database to use it. For example: `user@computer:~/FeuillesDeChene$ ./FeuillesDeChene -d ./data/en_fr.txt`.
+
+### Modes and Records
+Currently, program contains only one mode **Classic** and one record. If the record is beated, is saves in `records.txt` file. Unfortunately, if the program is not opened in its directory, the record file won't be reached.
+
+## Qt version
+Qt version serves more friendly UI, of course, using the same core as CLI. These two version are practicly same, they just differently abstract core functions and dealing with input/output.
+
+### Choosing resources
+In the tab menu, there is possible to load database and records and change modes and difficulty. Database and records can be changed in runtime.
+
+### Design
+The design is minimalistic, with no animations or images. It shows fundemantal things as score, mode, difficulty.. also progress bar to new records, and if the answer is incorrect it shows the correct answer at the bottom of the window.
 
 ## Custom Databases
-With small effort, not counting writing down the words and its translation, it is easy to start using custom words lists. However, there are some criteria that must be followed. You can find examples in the `data/` folder.
+With small effort, not counting writing down the words and its translation, it is easy to start using custom words lists.
 
 ### Rules for making custom databases
 
@@ -38,10 +52,3 @@ With small effort, not counting writing down the words and its translation, it i
 | blank lines | | blank lines will not be processed |
 | uncomplete word | `sun;soleil` | not completed words will not be processed |
 | format | `en_fr.txt` | format is not specified, .txt is recommended |
-
-### Linking database
-When executing the binary file, the `-d` switch can be used followed by path to the database `./data/en_fr.txt`, the switch must be typed before the path, otherwise, default path would be used.
-
-Example of execution in CLI:
-
-`username@computer:~/Programs/FeuillesDeChene/$ ./FeuillesDeChene -d ../data/en_fr.txt`

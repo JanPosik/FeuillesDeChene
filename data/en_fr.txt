@@ -15,7 +15,6 @@ child;enfant;1
 hand;main;1
 foot;pied;1
 head;tête;1
-eye;œil;1
 mouth;bouche;1
 nose;nez;1
 ear;oreille;1

@@ -10,7 +10,7 @@ namespace CLI {
 		int record = 0;
 
 		if (!file.is_open())
-			record = 33;
+			return {record};
 
 		std::string line;
 		if (getline(file, line))

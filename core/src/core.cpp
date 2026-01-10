@@ -15,25 +15,28 @@ namespace Core {
 
 	void NextWord(GameState& state)
 	{
-		std::mt19937 generator(rd());
-		int last_index = static_cast<int>(state.Words.size() - 1);
-		std::uniform_int_distribution<> distribution(0, last_index);
-		
-		int random_index = distribution(generator);
-
-		if (!(state.Difficulty == DIFFICULTY::ANY))
-			while (state.Words[random_index].Difficulty != state.Difficulty)
-				random_index = distribution(generator);
-
-		if (!state.Flipped)
+		if (state.WordsLoaded)
 		{
-			state.CurrentHint = state.Words[random_index].From;
-			state.CurrentTarget = state.Words[random_index].To;	
-		}
-		else
-		{
-			state.CurrentHint = state.Words[random_index].To;
-			state.CurrentTarget = state.Words[random_index].From;
+			std::mt19937 generator(rd());
+			int last_index = static_cast<int>(state.Words.size() - 1);
+			std::uniform_int_distribution<> distribution(0, last_index);
+			
+			int random_index = distribution(generator);
+	
+			if (!(state.Difficulty == DIFFICULTY::ANY))
+				while (state.Words[random_index].Difficulty != state.Difficulty)
+					random_index = distribution(generator);
+	
+			if (!state.Flipped)
+			{
+				state.CurrentHint = state.Words[random_index].From;
+				state.CurrentTarget = state.Words[random_index].To;	
+			}
+			else
+			{
+				state.CurrentHint = state.Words[random_index].To;
+				state.CurrentTarget = state.Words[random_index].From;
+			}
 		}
 	}
 

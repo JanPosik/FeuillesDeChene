@@ -1,2 +1,6 @@
 # builds
 cli/build/
+qt/build/
+
+# user configuration files
+qt/.qtcreator

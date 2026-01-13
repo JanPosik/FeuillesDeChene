@@ -3,11 +3,11 @@
 
 #include "game_state.h"
 #include <string>
-
+#include <string_view>
 
 namespace Core {
 	
-	void LoadWords(GameState& state, const std::string&);
+	void LoadDatabase(GameState& state, std::string_view);
 
 }
 

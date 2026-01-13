@@ -1,5 +1,6 @@
 #include "core.h"
 #include <string>
+#include <iostream>
 
 using Core::GameState;
 
@@ -33,5 +34,6 @@ namespace CLI {
         void PrintHelpMessage();
 	void ClearScreen();
        	void End(GameState&);
+	std::string ReadDatabase(const std::string&);
 
 }

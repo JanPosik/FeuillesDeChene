@@ -1,17 +1,11 @@
 #include "core.h"
 #include <random>
-#include <vector>
 #include <string>
 #include <cstdlib>
 
 static std::random_device rd;
 
 namespace Core {
-
-	void LoadDatabase(GameState& state, const std::string& filename)
-	{
-		LoadWords(state, filename);
-	}
 
 	void NextWord(GameState& state)
 	{

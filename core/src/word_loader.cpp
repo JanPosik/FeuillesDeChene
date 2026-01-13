@@ -1,12 +1,13 @@
-#include "word_loader.h"
-#include <sstream>
-#include <fstream>
-#include <algorithm>
 #include <vector>
+#include <charconv>
+#include "word_loader.h"
 #include "difficulty_types.h"
 #include "word.h"
 
-DIFFICULTY IntToDifficulty(int value)
+// delete
+#include <iostream>
+
+static DIFFICULTY IntToDifficulty(int value)
 {
 	switch (value)
 	{
@@ -19,68 +20,65 @@ DIFFICULTY IntToDifficulty(int value)
 
 namespace Core {
 
-	void LoadWords(GameState& state, const std::string& filename)
+	void LoadDatabase(GameState& state, std::string_view text)
 	{
-		std::vector<Word> words;
-		std::ifstream file(filename);
+		// set state attribute if other database was loaded and current one won't and clear vector
+		state.Words.clear(); state.Words.shrink_to_fit();
+		state.WordsLoaded = false;
+		state.LangFrom = state.LangTo = "not loaded";
 
-		if (!file.is_open())
+		size_t pos = 0;
+
+		auto nextLine = [&](std::string_view& line) -> bool {
+			if (pos >= text.size()) return false;
+			size_t end = text.find('\n', pos);
+			if (end == std::string_view::npos) end = text.size();
+			line = text.substr(pos, end - pos);
+			if (!line.empty() && line.back() == '\r') line.remove_suffix(1);
+			pos = end + 1;
+			return true;
+		};
+
+		std::string_view line;
+
+		// check if database contains key
+		if (!nextLine(line)) return;
+		if (!(line == "@feuilles_de_chene")) return;
+
+		// load language hints
+		if (!nextLine(line)) return;
+		size_t sep = line.find(';');
+		if (sep != std::string_view::npos)
 		{
-			state.WordsLoaded = false;
-			return;
+			state.LangFrom = std::string(line.substr(0, sep));
+			state.LangTo = std::string(line.substr(sep + 1));	
 		}
 
-		std::string line;
-
-		if (std::getline(file, line))
+		// words
+		while (nextLine(line))
 		{
-			std::stringstream ss(line);
-			std::string segment;
-			if (std::getline(ss, segment, ';'))
-				state.LangFrom = segment;
-			if (std::getline(ss, segment, ';'))
-				state.LangTo = segment;
-		}
+			if (line.empty() || line[0] == '#') continue;
 
-		while (std::getline(file, line))
-		{
-			if (line.empty() || line[0] == '#')
-				continue;
-			
+			size_t p1 = line.find(';');
+			size_t p2 = line.find(';', p1 + 1);
+			if (p1 == std::string_view::npos || p2 == std::string_view::npos) continue;
+
+			std::string_view from = line.substr(0, p1);
+			std::string_view to = line.substr(p1 + 1, p2 - p1 - 1);
+			std::string_view diff = line.substr(p2 + 1);
+
+			int difficulty = 1;
+			auto res = std::from_chars(diff.data(), diff.data() + diff.size(), difficulty);
+
 			Word word;
-			std::stringstream ss(line);
-			std::string segment;
-			int part = 0;
-			int difficulty_int = 0;
+			word.From = std::string(from);
+			word.To = std::string(to);
+			word.Difficulty = IntToDifficulty(difficulty);
 
-			while (std::getline(ss, segment, ';'))
-			{
-				switch (part)
-				{
-					case 0:
-						word.From = segment; break;
-					case 1:
-						word.To = segment; break;
-					case 2:
-						try 
-						{
-							difficulty_int = std::stoi(segment);
-						}
-						catch (const std::exception& e)
-						{
-							difficulty_int = 1;
-						}
-						word.Difficulty = IntToDifficulty(difficulty_int);
-						break;
-				}
-				part++;
-			}
-
-			if (part == 3)
-				words.push_back(word);
+			state.Words.push_back(word);
 		}
 
-		state.Words = words;
-		state.WordsLoaded = true;
+		state.WordsLoaded = (state.Words.size() > 0) ? true : false;
 	}
+
 }

@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 	Core::GameState state;
 	CLI::RecordManager rm;
 
-	Core::LoadDatabase(state, CLI::GetDatabasePath(argc, argv));
+	Core::LoadDatabase(state, CLI::ReadDatabase(CLI::GetDatabasePath(argc, argv)));
 	CLI::InitWindowsConsole();
 	CLI::ClearScreen();
 

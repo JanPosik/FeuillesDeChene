@@ -1,6 +1,8 @@
 #include "application.h"
 #include "ui_application.h"
 #include <QFileDialog>
+#include <QMessageBox>
+#include <QStyleFactory>
 
 Application::Application(QWidget *parent)
     : QMainWindow(parent)
@@ -25,7 +27,7 @@ Application::Application(QWidget *parent)
     auto record = LoadRecord();
     Core::ApplyRecord(this->State, record);
 
-    // create progress bar and set it at corner of menu bar
+    // create progress bar and set it at corner of menu
     QWidget* corner = new QWidget(ui->menubar);
     QHBoxLayout* layout = new QHBoxLayout(corner);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -43,6 +45,7 @@ Application::Application(QWidget *parent)
     corner->setLayout(layout);
     ui->menubar->setCornerWidget(corner, Qt::TopRightCorner);
 
+    QApplication::setStyle(QStyleFactory::create("Fusion"));
 
     UpdateUI();
 }
@@ -57,18 +60,41 @@ Application::~Application()
 
 void Application::LoadDatabase()
 {
+    bool success = true;
     QString databasePath = QFileDialog::getOpenFileName(this, tr("Select database"), QDir::homePath(), tr("All files (*)"));
-    Core::LoadDatabase(this->State, databasePath.toStdString());
-    Core::NextWord(this->State);
+    if (databasePath.isEmpty())
+        return;
+
+    QFile file(databasePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    QByteArray data = file.readAll();
+    std::string text = data.toStdString();
+    std::string_view view{text};
+    Core::LoadDatabase(this->State, view);
 
     // update ui if database loaded
     if (this->State.WordsLoaded)
     {
+        Core::NextWord(this->State);
         ui->translate_from_full_text->setText("Word to translate (" + QString::fromStdString(this->State.LangFrom) + "):");
         ui->translate_to_full_text->setText("Translate (" + QString::fromStdString(this->State.LangTo) + "):");
         ui->b_check_answer->setEnabled(true);
-        UpdateUI();
+        ui->b_next_word_after_wrong->setEnabled(false);
+        ui->wrong_answer_widget->hide();
     }
+    else
+    {
+        QMessageBox::warning(this, "Database", "Database could not be loaded");
+        ui->b_check_answer->setEnabled(false);
+        ui->b_next_word_after_wrong->setEnabled(false);
+        ui->translate_from_full_text->setText("Word to translate (not loaded):");
+        ui->translate_to_full_text->setText("Translate (not loaded):");
+        this->State.CurrentHint = "not loaded";
+    }
+    UpdateUI();
+    UpdateNewRecordBar();
 }
 
 void Application::LoadRecordFile()
@@ -76,6 +102,7 @@ void Application::LoadRecordFile()
     this->RecordPath = QFileDialog::getOpenFileName(this, tr("Select records file"), QDir::homePath(), tr("All files (*)"));
     auto record = LoadRecord();
     Core::ApplyRecord(this->State, record);
+    UpdateNewRecordBar();
     UpdateUI();
 }
 
@@ -97,6 +124,7 @@ void Application::CheckAnswer()
         Core::NextWord(this->State);
         ui->input_translation->setText("");
         UpdateUI();
+        UpdateNewRecordBar();
     }
     else
     {
@@ -104,13 +132,13 @@ void Application::CheckAnswer()
         ui->b_check_answer->setEnabled(false);
         ui->b_next_word_after_wrong->setEnabled(true);
     }
-    UpdateNewRecordBar();
 }
 
 void Application::ContinueAfterWrongAnswer()
 {
     Core::NextWord(this->State);
     UpdateUI();
+    UpdateNewRecordBar();
     ui->b_check_answer->setEnabled(true);
     ui->b_next_word_after_wrong->setEnabled(false);
     ui->wrong_answer_widget->hide();

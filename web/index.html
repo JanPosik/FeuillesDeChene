@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Feuilles de Chêne</title>
+	<link rel="stylesheet" href="./style.css">
+	<link rel="stylesheet" href="./media.css">
+	<link rel="icon">
+</head>
+<body>
+	<div id="top-bar">
+		<h1>Feuilles de Chêne</h1>
+		<div id="tab-bar">
+			<div class="tab" data-tab="game" title="Game Interface [1]"></div>
+			<div class="tab" data-tab="database" title="Set or Attach Databases [2]"></div>
+			<div class="tab" data-tab="arcade" title="Set Game Modes and Difficulty [3]"></div>
+			<div class="tab" data-tab="settings" title="User Settings [4]"></div>
+		</div>
+	</div>
+	<div id="feuilles-de-chene">
+	<!-- Game interface -->
+	<div class="window" id="game-window" data-win="game">
+		<div id="main-layout">
+			<div id="new-record-bar">
+				<div id="new-record-progress-back">
+					<div id="new-record-progress-top"></div>
+				</div>
+				<div id="new-record-percent">0%</div>
+			</div>
+			<div id="arcade-bar">
+				<div id="score-bar">
+					<div id="score-text">Score:</div>
+					<div id="score">0</div>
+				</div>
+				<div id="mode" title="Game Mode">Classic</div>
+				<div id="record-bar">
+					<div id="record-text">Record:</div>
+					<div id="record">0</div>
+				</div>
+			</div>
+			<div id="game-space">
+				<div id="lang-from-bar">
+					<div id="lang-from-text-bar">
+						<div id="lang-from-text">Translate this word from</div>
+						<div id="lang-from">not loaded</div>
+					</div>
+					<div id="difficulty" title="Word Difficulty">any</div>
+				</div>
+				<div id="current-hint" title="Word to translate">not loaded</div>
+				<div id="lang-to-bar">
+					<div id="lang-to-text">Targetted language</div>
+					<div id="lang-to">not loaded</div>
+				</div>
+				<div id="input-bar">
+					<input type="text" id="word-input" maxlength="25" placeholder="Type here...">
+					<button type="button" id="check" title="Check your answer [Enter]">Check</button>
+				</div>
+			</div>
+		</div>
+		<div id="right-answer-layout">
+			<div id="text-feedback">
+				<div id="wrong-text">Wrong!</div>
+				<div id="right-answer-bar">
+					<div id="right-answer-text">Right answer was</div>
+					<div id="right-answer">not loaded</div>
+					<div id="right-answer-text2">not</div>
+					<div id="user-wrong-answer">flag{feuilles_de_chene_web_html_source_explorer}</div>
+				</div>
+			</div>
+			<div id="time-left-bar"></div>
+		</div>
+	</div>
+
+	<!-- Database interface -->
+	<div class="window" id="database-window" data-win="database">
+		<div class="database-content-wrapper">
+			<div id="database-header">Database</div>
+			<label for="database-input" id="database-input-label">Select or drop database</label>
+			<input type="file" id="database-input">
+		</div>
+		<div class="database-content-wrapper">
+			<div id="alternative-databases-header">Or try our databases</div>
+			<div id="suggested-databases">
+				<div class="suggested-database" id="database1">
+					<div id="suggested-database-name">Beginner french words</div>
+					<div id="suggested-database-author">by <span>Feuilles de Chêne</span></div>
+				</div>
+				<div class="suggested-database" id="database2">
+					<div id="suggested-database-name">Italian food slang</div>
+					<div id="suggested-database-author">by <span>Feuilles de Chêne</span></div>
+				</div>
+				<div class="suggested-database" id="database3">
+					<div id="suggested-database-name">Long gernam word assemblies</div>
+					<div id="suggested-database-author">by <span>Feuilles de Chêne</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Arcade interface -->
+	<div class="window" id="arcade-window" data-win="arcade">
+		<div class="database-content-wrapper">
+			<div id="arcade-header">Arcade</div>
+			<div id="difficulty-header">Choose difficulty</div>
+			<div id="difficulties">
+				<div class="difficulty" data-dif="easy">Easy</div>
+				<div class="difficulty" data-dif="medium">Medium</div>
+				<div class="difficulty" data-dif="hard">Hard</div>
+				<div class="difficulty difficulty-active" data-dif="any">Any</div>
+			</div>
+		</div>
+		<div class="database-content-wrapper">
+			<div id="game-mode-header">Game modes</div>
+			<div id="game-modes">
+				<div class="game-mode game-mode-active" title="Click to select">
+					<div></div>
+					<div class="game-mode-name">Classic</div>
+					<div class="game-mode-info">Your own pace, no special rules, the classic</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Settings interface -->
+	<div class="window" id="settings-window" data-win="settings">
+		<div class="database-content-wrapper">
+			<div id="settings-header">Settings</div>	
+			<div id="color-theme-heading">Color theme</div>
+			<div id="color-themes">
+				<div class="color-theme" id="light-theme">Light</div>
+				<div class="color-theme color-theme-active" id="dark-theme">Dark</div>
+			</div>
+			<div id="colors-heading">Colors</div>
+			<div id="colors">
+				<div class="color">
+					<div class="color-name">Color 1</div>
+					<input class="color-picker" type="color" id="color-picker-1" value="#57a7ff">
+					<div class="color-reset" id="reset-color-1">Reset</div>
+				</div>
+				<div class="color">
+					<div class="color-name">Color 2</div>
+					<input class="color-picker" type="color" id="color-picker-2" value="#ff9f23">
+					<div class="color-reset" id="reset-color-2">Reset</div>
+				</div>
+				<div class="color">
+					<div class="color-name">Word color 1</div>
+					<input class="color-picker" type="color" id="color-picker-3" value="#80b5ff">
+					<div class="color-reset" id="reset-color-3">Reset</div>
+				</div>
+				<div class="color">
+					<div class="color-name">Word color 2</div>
+					<input class="color-picker" type="color" id="color-picker-4" value="#ffbe55">
+					<div class="color-reset" id="reset-color-4">Reset</div>
+				</div>
+			</div>
+			<div id="options-header">Options</div>
+			<div id="options">
+				<div class="option">
+					<input type="checkbox" class="option-checkbox" id="check-show-progress">
+					<div class="option-name">Show progress bar to beat new record</div>
+				</div>
+				<div class="option">
+					<input type="checkbox" class="option-checkbox" checked id="check-show-answer">
+					<div class="option-name">Show solution after wrong answer</div>
+				</div>
+			</div>
+		</div>
+		<div id="reset-all-wrapper">
+			<div id="reset-all">Reset all</div>	
+		</div>
+	</div>
+	</div>
+
+
+	<script type="module">
+		import { icons } from "./icons.js";
+		const labels = {
+			game: "Game",
+			database: "Database",
+			arcade: "Arcade",
+			settings: "Settings"
+		};
+		const tabs = document.querySelectorAll(".tab");
+		function SetActiveTab(current) {
+			tabs.forEach(tab => {
+				let name = tab.dataset.tab;
+				let isActive = tab === current;
+
+				tab.classList.toggle("tab-active", isActive);
+				tab.innerHTML = isActive ? labels[name] : icons[name];
+			});
+		};
+
+		tabs.forEach(tab => {
+   			 tab.addEventListener("click", () => SetActiveTab(tab));
+		});
+
+		// application logic
+		// -----------------
+		const api = {};
+
+		// document elements
+		const root = document.documentElement;
+		let rootStyles = getComputedStyle(root);
+		let e_lang_from = document.getElementById("lang-from");
+		let e_lang_to = document.getElementById("lang-to");
+		let e_current_hint = document.getElementById("current-hint");
+		let e_word_input = document.getElementById("word-input");
+		let e_score = document.getElementById("score");
+		let e_record = document.getElementById("record");
+		let e_right_layout = document.getElementById("right-answer-layout");
+		let e_time_bar = document.getElementById("time-left-bar");
+		let e_right_answer = document.getElementById("right-answer");
+		let e_user_answer = document.getElementById("user-wrong-answer");
+		let e_check = document.getElementById("check");
+		let e_database_label = document.getElementById("database-input-label");
+		let e_database_input = document.getElementById("database-input");
+		let e_database1 = document.getElementById("database1");
+		let e_database2 = document.getElementById("database2");
+		let e_database3 = document.getElementById("database3");
+		let e_favicon = document.querySelector("link[rel~='icon']");
+		let e_difficulty = document.getElementById("difficulty");
+		let e_reset_color_1 = document.getElementById("reset-color-1");
+		let e_reset_color_2 = document.getElementById("reset-color-2");
+		let e_reset_color_3 = document.getElementById("reset-color-3");
+		let e_reset_color_4 = document.getElementById("reset-color-4");
+		let e_color_picker_1 = document.getElementById("color-picker-1");
+		let e_color_picker_2 = document.getElementById("color-picker-2");
+		let e_color_picker_3 = document.getElementById("color-picker-3");
+		let e_color_picker_4 = document.getElementById("color-picker-4");
+		let e_reset_all = document.getElementById("reset-all");
+		let e_light_theme = document.getElementById("light-theme");
+		let e_dark_theme = document.getElementById("dark-theme");
+		let e_check_answer = document.getElementById("check-show-answer");
+		let e_check_progress = document.getElementById("check-show-progress");
+		let e_new_record_bar = document.getElementById("new-record-bar");
+		let e_new_record_progress = document.getElementById("new-record-progress-top");
+		let e_new_record_percent = document.getElementById("new-record-percent");
+
+		let c_right_answer = "#68ef22";
+		let c_wrong_answer = "#ff3a12";
+		let c_new_record = "#c3a131";
+		let c_main = "#f1ecdd";
+		let c_word_1 = rootStyles.getPropertyValue('--word-color-1').trim();
+		let c_word_2 = rootStyles.getPropertyValue('--word-color-2').trim();
+
+		let time_left = 0;
+		let tick_ID;
+		let toggle = 0;
+		let toggle_switch = true;
+		let active_window = "game";
+		let isFocused = false;
+		let showAnswer = true;
+		let showProgress = false;
+
+		const windows = document.querySelectorAll(".window");
+		const dif_buttons = document.querySelectorAll(".difficulty");
+
+		Module.onRuntimeInitialized = () => {
+			// load database and return boolean if loaded
+			api.loadDatabase = function (text) {
+				return Module.ccall(
+					"loadDatabaseFromText",
+					"number",
+					["string"],
+					[text]
+				) !== 0;
+			};
+				
+			api.getLangFromText = function () {
+				return Module.ccall("getLangFromHint", "string", [], []);
+			};
+
+			api.getLangToText = function () {
+				return Module.ccall("getLangToHint", "string", [], []);
+			};
+
+			api.getScore = function () {
+				return Module.ccall("getScore", "number", [], []);
+			};
+
+			api.getRecord = function () {
+				return Module.ccall("getRecord", "number", [], []);
+			};
+
+			api.getNextWord = function () {
+				return Module.ccall(
+					"getNextWord",
+					"string",
+					[],
+					[]
+				);
+			};
+
+			api.getCurrentTarget = function () {
+				return Module.ccall("getCurrentTarget", "string", [], []);
+			};
+
+			api.checkAnswer = function (attempt) {
+				return Module.ccall(
+					"checkAnswer",
+					"number",
+					["string"],
+					[attempt]
+				) !== 0;
+			};
+
+			api.setDifficulty = function (difficulty) {
+				Module.ccall(
+					"setDifficulty",
+					"",
+					["string"],
+					[difficulty]
+				);
+			};
+		};
+		// shortcuts	
+		window.addEventListener("keydown", function(event) {
+			if (event.key == "Enter" && active_window === "game")
+				CheckAnswer();
+			if (!isFocused)
+			{
+				if(event.key == "1") {
+					SetActiveWindow(tabs[0]);
+					SetActiveTab(tabs[0]);
+				}
+				else if(event.key == "2") {
+					SetActiveWindow(tabs[1]);
+					SetActiveTab(tabs[1]);
+				}
+				else if(event.key == "3") {
+					SetActiveWindow(tabs[2]);
+					SetActiveTab(tabs[2]);
+				}
+				else if(event.key == "4") {
+					SetActiveWindow(tabs[3]);
+					SetActiveTab(tabs[3]);
+				}
+			}
+		}, true);
+
+		async function LoadDatabaseFromFile(file) {
+			const text = await fetch(file).then(r => r.text());
+			LoadDatabaseFromText(text);
+		};
+
+		function LoadDatabaseFromText(text) {
+			if (api.loadDatabase(text))
+			{
+				NextWord();
+				e_lang_from.textContent = api.getLangFromText();
+				e_lang_to.textContent = api.getLangToText();
+				console.log("Database loaded successfuly: " + api.getLangFromText() + " - " + api.getLangToText());	
+				SetActiveTab(tabs[0]);
+				SetActiveWindow(tabs[0]);
+			}
+			else
+			{
+				console.log("Database load failed");
+			}
+		}
+
+		function NextWord()
+		{
+			e_right_answer.textContent = api.getCurrentTarget();
+			e_current_hint.textContent = api.getNextWord();	
+			e_score.textContent = api.getScore();
+			e_record.textContent = api.getRecord();
+		};
+
+		function CheckAnswer()
+		{
+			let attempt = e_word_input.value;
+			let result = api.checkAnswer(attempt);
+			NextWord();
+			clearInterval(tick_ID);
+			e_word_input.focus();
+			if (!result)
+			{
+				if (showAnswer)
+				{
+					time_left = 100;
+					if (attempt == "") attempt = "____";
+					e_user_answer.textContent = attempt;
+					e_right_layout.style.display = "flex";
+					tick_ID = setInterval(Tick, 50);
+				}
+				e_score.style.color = c_wrong_answer;
+			}
+			else
+			{
+				e_right_layout.style.display = "none";
+				e_score.style.color = c_right_answer;
+			}
+			e_word_input.value = "";
+			let score = api.getScore();
+			let record = api.getRecord();
+			e_record.style.color = (score >= record && record !== 0) ? c_new_record : c_main;
+			UpdateNewRecordBar();
+
+			toggle++;
+			if (toggle == 10)
+			{
+				toggle = 0;
+				toggle_switch = !toggle_switch;
+				e_current_hint.style.color = toggle_switch ? c_word_1 : c_word_2;
+			}
+		};
+
+		function UpdateRightAnswerMessageBar()
+		{
+			if (time_left > 0)
+				e_time_bar.style.width = --time_left + "%";
+			else
+			{
+				e_right_layout.style.display = "none";
+				clearInterval(tick_ID);
+			}
+		};
+
+		function Tick()
+		{
+			UpdateRightAnswerMessageBar();
+		};
+
+		function UpdateNewRecordBar() {
+			const record = api.getRecord();
+			const score = api.getScore();
+			let p = 0;
+			if (record > 0)
+				p = score / record * 100;
+			const text = Math.trunc(p) + "%";
+			e_new_record_progress.style.width = text;
+			e_new_record_percent.innerHTML = text;	
+		};
+
+		function SetActiveWindow(tab) {
+			windows.forEach(win => {
+				if (win.dataset.win == tab.dataset.tab)
+				{
+					win.style.display = "flex";
+					active_window = tab.dataset.tab;
+				}
+				else
+					win.style.display = "none";
+			});
+		};
+
+		function SetDifficulty(difficulty) {
+			api.setDifficulty(difficulty);
+			dif_buttons.forEach(dif => {
+				const isActive = dif.dataset.dif == difficulty ? true : false;
+				dif.classList.toggle("difficulty-active", isActive);
+			});
+			e_difficulty.innerHTML = difficulty;
+			NextWord();
+		};
+
+		function InitFavicon() {
+			e_favicon.href = `data:image/svg+xml,${encodeURIComponent(icons["favicon"])}`;
+		};
+
+		function ResetColor1() {
+			root.style.setProperty('--color-1', '#57a7ff');			
+			e_color_picker_1.value = '#57a7ff';
+			root.style.setProperty('--color-1-light', rootStyles.getPropertyValue('--color-1').trim() + "aa");
+		};
+
+		function ResetColor2() {
+			root.style.setProperty('--color-2', '#ff9f23');			
+			e_color_picker_2.value = '#ff9f23';
+		};
+
+		function ResetWordColor1() {
+			root.style.setProperty('--word-color-1', '#70caff');			
+			e_color_picker_3.value = '#70caff';
+			c_word_1 = '#70caff';
+			e_current_hint.style.color = c_word_1;
+		};
+
+		function ResetWordColor2() {
+			root.style.setProperty('--word-color-2', '#ffbe55');			
+			e_color_picker_4.value = '#ffbe55';
+			c_word_2 = '#ffbe55';
+		};
+
+		function SetColor (color, property, picker, isColor1 = false) {
+			root.style.setProperty(property , color);
+			picker.value = color;
+			if (isColor1)
+				root.style.setProperty(property + '-light', rootStyles.getPropertyValue(property).trim() + "aa");
+		};
+
+		function SetLightTheme() {
+			e_light_theme.classList.add("color-theme-active");
+			e_dark_theme.classList.remove("color-theme-active");
+			root.style.setProperty('--background', '#ececec');
+			root.style.setProperty('--main-color', '#00030c');
+			root.style.setProperty('--header', '#57a7ff');
+			root.style.setProperty('--header-shadow', '#57a7ff77');
+			root.style.setProperty('--unactive-1', '#00030c28');
+			root.style.setProperty('--unactive-2', '#00030c44');
+			root.style.setProperty('--unactive-3', '#00030c66');
+			SetColor('#a51d2d', '--color-1', e_color_picker_1, true);
+			SetColor('#26a269', '--color-2', e_color_picker_2);
+			SetColor('#e01b24', '--word-color-1', e_color_picker_3);
+			SetColor('#33d17a', '--word-color-2', e_color_picker_4);
+			c_word_1 = '#e010b24';
+			c_word_2 = '#33d17a';
+			e_current_hint.style.color = '#e01b24';
+		};
+
+		function SetDarkTheme() {
+			e_dark_theme.classList.add("color-theme-active");
+			e_light_theme.classList.remove("color-theme-active");
+			root.style.setProperty('--background', '#00030c');
+			root.style.setProperty('--main-color', '#f1ecdd');
+			root.style.setProperty('--header', '#f3ec9f');
+			root.style.setProperty('--header-shadow', '#f3ec9f77');
+			root.style.setProperty('--unactive-1', '#eeeeee28');
+			root.style.setProperty('--unactive-2', '#eeeeee44');
+			root.style.setProperty('--unactive-3', '#eeeeee66');
+			SetColor('#57a7ff', '--color-1', e_color_picker_1, true);
+			SetColor('#ff9f23', '--color-2', e_color_picker_2);
+			SetColor('#70caff', '--word-color-1', e_color_picker_3);
+			SetColor('#ffbe55', '--word-color-2', e_color_picker_4);
+			c_word_1 = '#70caff';
+			c_word_2 = '#ffbe55';
+			e_current_hint.style.color = '#70caff';
+		};
+
+		// event listeners
+		tabs.forEach(tab => {
+   			 tab.addEventListener("click", () => SetActiveWindow(tab));
+		});
+
+		e_check_answer.addEventListener("click", () => {
+			if (e_check_answer.checked)
+				showAnswer = true;
+			else
+				showAnswer = false;
+		});
+
+		e_check_progress.addEventListener("click", () => {
+			if (e_check_progress.checked)
+				e_new_record_bar.style.display = "flex";
+			else
+				e_new_record_bar.style.display = "none";
+		});
+
+		e_check.addEventListener("click", () => CheckAnswer());
+
+		e_database_input.addEventListener("change", (event) => {
+			const database = event.target.files[0];
+
+			if (database)
+			{
+				const reader = new FileReader();	
+				reader.onload = (e) => {
+                			const content = e.target.result;
+					LoadDatabaseFromText(content);
+                		};
+				
+				reader.readAsText(database);
+			}
+		});
+
+		e_reset_color_1.addEventListener("click", () => {
+			ResetColor1();
+		});
+		e_reset_color_2.addEventListener("click", () => {
+			ResetColor2();
+		});
+		e_reset_color_3.addEventListener("click", () => {
+			ResetWordColor1();
+		});
+		e_reset_color_4.addEventListener("click", () => {
+			ResetWordColor2();
+		});
+
+		e_color_picker_1.addEventListener("input", (e) => {
+			SetColor(e.target.value, '--color-1', e_color_picker_1, true);
+		});
+
+		e_color_picker_2.addEventListener("input", (e) => {
+			SetColor(e.target.value, '--color-2', e_color_picker_2);
+		});
+
+		e_color_picker_3.addEventListener("input", (e) => {
+			const newColor = e.target.value;
+			SetColor(newColor, '--word-color-1', e_color_picker_3);
+			c_word_1 = newColor;
+			e_current_hint.style.color = newColor;
+		});
+
+		e_color_picker_4.addEventListener("input", (e) => {
+			const newColor = e.target.value;
+			SetColor(newColor, '--word-color-2', e_color_picker_4);
+			c_word_2 = newColor;
+			e_current_hint.style.color = newColor;
+		});
+
+		e_reset_all.addEventListener("click", () => {	
+			ResetColor1();
+			ResetColor2();
+			ResetWordColor1();
+			ResetWordColor2();
+			SetDarkTheme();
+			if (e_check_progress.checked)
+				e_check_progress.click();
+			if (!e_check_answer.checked)
+				e_check_answer.click();
+		});
+
+		e_light_theme.addEventListener("click", () => {
+			SetLightTheme();
+		});
+
+		e_dark_theme.addEventListener("click", () => {
+			SetDarkTheme();
+		});
+
+		e_database_label.addEventListener("dragover", (e) => {
+			e.preventDefault();
+			e_database_label.classList.add("dragged");
+		});
+		e_database_label.addEventListener("dragleave", (e) => {
+			e.preventDefault();
+			e_database_label.classList.remove("dragged");
+		});
+		e_database_label.addEventListener("drop", (e) => {
+			e.preventDefault();
+			e_database_label.classList.remove("dragged");
+
+			const database = e.dataTransfer.files[0];
+			if (!database)
+				console.log("Database could not be loaded");
+
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				const content = e.target.result;
+				LoadDatabaseFromText(content);
+			};
+
+			reader.readAsText(database);
+		});
+		// suggested databases, could change over time, but the names database1.. should stay the same
+		e_database1.addEventListener("click", () => {
+			LoadDatabaseFromFile("database1.txt");
+		});
+		e_database2.addEventListener("click", () => {
+			LoadDatabaseFromFile("database2.txt");
+		});
+		e_database3.addEventListener("click", () => {
+			LoadDatabaseFromFile("database3.txt");
+		});
+		
+		dif_buttons.forEach(dif => {
+			dif.addEventListener("click", () => {
+				let difficulty = dif.dataset.dif;
+				SetDifficulty(difficulty);
+			});
+		});
+
+		// set initial configuration and states
+		InitFavicon();
+		setTimeout(LoadDatabaseFromFile, 100, "database1.txt");
+	</script>
+	<script src="build/feuilles_de_chene.js"></script>
+
+</body>
+</html>
